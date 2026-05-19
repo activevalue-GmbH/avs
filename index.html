@@ -10,628 +10,97 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-
+    html { scroll-behavior: smooth; }
     :root {
-      --bg: #0e0c0a;
-      --bg-raised: #181614;
-      --bg-card: #1e1c19;
-      --bg-warm: #141210;
-      --cream: #e8e0d4;
-      --warm-white: #f0ebe4;
-      --ink: #e8e0d4;
-      --ink-muted: #a09888;
-      --ink-faint: #6a6258;
-      --rule: #2a2622;
-      --rule-light: #332e28;
-      --accent: #c4862a;
-      --accent-soft: #8f6f4e;
-      --accent-pale: #d4a853;
-      --serif: "Playfair Display", Georgia, serif;
-      --sans: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --bg: #0e0c0a; --bg-raised: #181614; --bg-card: #1e1c19; --cream: #e8e0d4;
+      --warm-white: #f0ebe4; --ink: #e8e0d4; --ink-muted: #a09888; --ink-faint: #6a6258;
+      --rule: #2a2622; --rule-light: #332e28; --accent: #c4862a; --accent-soft: #8f6f4e; --accent-pale: #d4a853;
+      --serif: "Playfair Display", Georgia, serif; --sans: "DM Sans", system-ui, sans-serif; --mono: "JetBrains Mono", monospace;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 18% 0%, rgba(196, 134, 42, 0.08), transparent 32rem),
-        linear-gradient(180deg, #100d0b 0%, var(--bg) 32rem);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 100;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-pale));
-      transition: width 0.1s linear;
-    }
-
-    .page {
-      width: min(100%, 940px);
-      margin: 0 auto;
-      padding: 0 40px 88px;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.75s ease, transform 0.75s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .masthead {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 24px;
-      align-items: end;
-      padding: 48px 0 34px;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .brand-pair {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .brand-lockup {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      min-height: 22px;
-      color: var(--ink-muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      line-height: 1;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .brand-lockup img {
-      display: block;
-      max-width: 120px;
-      max-height: 24px;
-      opacity: 0;
-      filter: grayscale(1) brightness(1.4);
-      transition: opacity 0.2s ease;
-    }
-
-    .brand-lockup.logo-loaded img {
-      opacity: 0.74;
-    }
-
-    .brand-lockup.logo-loaded .brand-text {
-      display: none;
-    }
-
-    .brand-lockup.logo-missing .brand-text {
-      display: inline-block;
-    }
-
-    .brand-text {
-      display: inline-block;
-    }
-
-    .brand-divider {
-      width: 34px;
-      height: 1px;
-      background: var(--rule-light);
-    }
-
-    .masthead-title {
-      justify-self: center;
-      color: var(--ink-faint);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-align: center;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .masthead-meta {
-      justify-self: end;
-      color: var(--ink-faint);
-      font-family: var(--mono);
-      font-size: 11px;
-      line-height: 1.6;
-      text-align: right;
-    }
-
-    .hero {
-      padding: 76px 0 66px;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .eyebrow,
-    .section-label,
-    .overview-badge,
-    .kernbefund-label,
-    .meta-line,
-    .direction-kicker,
-    .footer-brand,
-    .footer-note {
-      font-family: var(--mono);
-      text-transform: uppercase;
-    }
-
-    .eyebrow {
-      margin-bottom: 28px;
-      color: var(--accent);
-      font-size: 11px;
-      line-height: 1.4;
-    }
-
-    .hero-headline {
-      max-width: 760px;
-      margin-bottom: 24px;
-      color: var(--warm-white);
-      font-family: var(--serif);
-      font-size: clamp(42px, 8vw, 68px);
-      font-weight: 700;
-      line-height: 1.02;
-    }
-
-    .hero-subline {
-      max-width: 690px;
-      margin-bottom: 38px;
-      color: var(--ink-muted);
-      font-family: var(--serif);
-      font-size: clamp(20px, 3.1vw, 28px);
-      font-style: italic;
-      line-height: 1.42;
-    }
-
-    .hero-body {
-      max-width: 650px;
-      color: var(--ink-muted);
-      font-size: 16px;
-    }
-
-    .meta-line {
-      margin-top: 42px;
-      color: var(--ink-faint);
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .section {
-      position: relative;
-      padding: 62px 0;
-      border-bottom: 1px solid var(--rule);
-      scroll-margin-top: 28px;
-    }
-
-    .section:last-of-type {
-      border-bottom: 0;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 30px;
-      color: var(--ink-faint);
-      font-size: 11px;
-      line-height: 1.45;
-    }
-
-    .section-label::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--rule);
-    }
-
-    .section-headline {
-      max-width: 690px;
-      margin-bottom: 24px;
-      color: var(--warm-white);
-      font-family: var(--serif);
-      font-size: clamp(29px, 4.2vw, 39px);
-      font-weight: 700;
-      line-height: 1.16;
-    }
-
-    .section-body {
-      max-width: 660px;
-      color: var(--ink-muted);
-      font-size: 16px;
-      line-height: 1.78;
-    }
-
-    .section-body p {
-      margin-bottom: 17px;
-    }
-
-    .section-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .section-body strong {
-      color: var(--cream);
-      font-weight: 500;
-    }
-
-    .pullquote {
-      max-width: 680px;
-      margin: 34px 0 40px;
-      padding: 5px 0 5px 28px;
-      border-left: 3px solid var(--accent);
-    }
-
-    .pullquote-text {
-      color: var(--warm-white);
-      font-family: var(--serif);
-      font-size: clamp(20px, 2.8vw, 25px);
-      font-style: italic;
-      line-height: 1.42;
-    }
-
-    .kernbefund,
-    .definition-box {
-      max-width: 700px;
-      margin-top: 42px;
-      border: 1px solid var(--rule-light);
-      border-left: 3px solid var(--accent);
-      border-radius: 4px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)), var(--bg-card);
-      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
-    }
-
-    .kernbefund {
-      padding: 27px 31px;
-    }
-
-    .kernbefund-label {
-      margin-bottom: 12px;
-      color: var(--accent);
-      font-size: 10px;
-      line-height: 1.4;
-    }
-
-    .kernbefund-text {
-      color: var(--ink-muted);
-      font-size: 15px;
-      line-height: 1.66;
-    }
-
-    .kernbefund-text strong {
-      color: var(--cream);
-      font-weight: 500;
-    }
-
-    .definition-box {
-      padding: 25px 30px 27px;
-    }
-
-    .definition-label {
-      margin-bottom: 12px;
-      color: var(--accent-soft);
-      font-family: var(--mono);
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    .definition-text {
-      color: var(--cream);
-      font-family: var(--serif);
-      font-size: 20px;
-      font-style: italic;
-      line-height: 1.55;
-    }
-
-    .overview-intro {
-      max-width: 630px;
-      margin-bottom: 34px;
-      color: var(--ink-muted);
-    }
-
-    .overview-grid {
-      display: grid;
-      gap: 1px;
-      margin: 36px 0 4px;
-      overflow: hidden;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      background: var(--rule);
-    }
-
-    .overview-row {
-      display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) auto;
-      gap: 16px;
-      align-items: center;
-      min-height: 58px;
-      padding: 14px 20px;
-      background: var(--bg-raised);
-      color: inherit;
-      text-decoration: none;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .overview-row:hover,
-    .overview-row:focus-visible {
-      background: #211d19;
-      transform: translateX(3px);
-      outline: none;
-    }
-
-    .overview-num {
-      color: var(--ink-faint);
-      font-family: var(--mono);
-      font-size: 12px;
-    }
-
-    .overview-title {
-      color: var(--cream);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .overview-badge {
-      padding: 4px 10px;
-      border: 1px solid rgba(196, 134, 42, 0.2);
-      border-radius: 3px;
-      background: rgba(196, 134, 42, 0.08);
-      color: var(--accent-pale);
-      font-size: 10px;
-      line-height: 1.3;
-      white-space: nowrap;
-    }
-
-    .badge-einordnung {
-      border-color: rgba(143, 111, 78, 0.35);
-      background: rgba(143, 111, 78, 0.11);
-      color: #c3aa8b;
-    }
-
-    .badge-eigentuemerfrage {
-      border-color: rgba(196, 134, 42, 0.28);
-      background: rgba(196, 134, 42, 0.12);
-      color: var(--accent);
-    }
-
-    .badge-pruefrahmen {
-      border-color: rgba(153, 143, 124, 0.23);
-      background: rgba(153, 143, 124, 0.08);
-      color: #bfb5a5;
-    }
-
-    .badge-kooperation {
-      border-color: rgba(212, 168, 83, 0.3);
-      background: rgba(212, 168, 83, 0.1);
-      color: var(--accent-pale);
-    }
-
-    .direction-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1px;
-      max-width: 760px;
-      margin: 36px 0 0;
-      overflow: hidden;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      background: var(--rule);
-    }
-
-    .direction-card {
-      min-height: 210px;
-      padding: 26px 25px;
-      background: var(--bg-raised);
-    }
-
-    .direction-card:last-child {
-      grid-column: 1 / -1;
-      min-height: 0;
-    }
-
-    .direction-kicker {
-      margin-bottom: 18px;
-      color: var(--ink-faint);
-      font-size: 10px;
-    }
-
-    .direction-title {
-      margin-bottom: 12px;
-      color: var(--warm-white);
-      font-family: var(--serif);
-      font-size: 22px;
-      line-height: 1.2;
-    }
-
-    .direction-text {
-      color: var(--ink-muted);
-      font-size: 14px;
-      line-height: 1.62;
-    }
-
-    .closing {
-      padding-top: 72px;
-    }
-
-    .footer {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 28px;
-      align-items: end;
-      margin-top: 40px;
-      padding: 40px 0 0;
-      border-top: 1px solid var(--rule);
-    }
-
-    .footer-brand {
-      color: var(--ink-faint);
-      font-size: 11px;
-      line-height: 1.65;
-    }
-
-    .footer-contact {
-      color: var(--ink-faint);
-      font-size: 13px;
-      line-height: 1.65;
-      text-align: right;
-    }
-
-    .footer-contact a {
-      color: var(--ink-muted);
-      text-decoration: none;
-    }
-
-    .footer-contact a:hover,
-    .footer-contact a:focus-visible {
-      color: var(--cream);
-      outline: none;
-    }
-
-    @media (min-width: 981px) {
-      .section-label {
-        position: relative;
-        left: -166px;
-        display: block;
-        width: 140px;
-        height: 0;
-        margin-bottom: 0;
-        transform: translateY(7px);
-      }
-
-      .section-label::after {
-        display: none;
-      }
-    }
-
-    @media (max-width: 820px) {
-      .page {
-        padding: 0 28px 72px;
-      }
-
-      .masthead {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        align-items: start;
-      }
-
-      .masthead-title,
-      .masthead-meta {
-        justify-self: start;
-        text-align: left;
-      }
-
-      .hero {
-        padding: 58px 0 54px;
-      }
-
-      .section {
-        padding: 52px 0;
-      }
-
-      .direction-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .direction-card:last-child {
-        grid-column: auto;
-      }
-
-      .footer {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-contact {
-        text-align: left;
-      }
-    }
-
-    @media (max-width: 640px) {
-      body {
-        font-size: 15px;
-      }
-
-      .page {
-        padding: 0 20px 60px;
-      }
-
-      .brand-pair {
-        gap: 11px;
-      }
-
-      .brand-divider {
-        width: 22px;
-      }
-
-      .hero-headline {
-        font-size: 38px;
-      }
-
-      .hero-subline {
-        font-size: 20px;
-      }
-
-      .overview-row {
-        grid-template-columns: 34px 1fr;
-        gap: 12px;
-        padding: 16px;
-      }
-
-      .overview-badge {
-        grid-column: 2;
-        justify-self: start;
-      }
-
-      .kernbefund,
-      .definition-box {
-        padding: 23px 22px;
-      }
-
-      .pullquote {
-        padding-left: 20px;
-      }
-    }
+      min-height: 100vh; background: radial-gradient(circle at 18% 0%, rgba(196,134,42,.08), transparent 32rem), linear-gradient(180deg,#100d0b 0%,var(--bg) 32rem);
+      color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+    .progress-bar { position: fixed; top: 0; left: 0; z-index: 100; width: 0; height: 2px; background: linear-gradient(90deg,var(--accent),var(--accent-pale)); transition: width .1s linear; }
+    .page { width: min(100%, 940px); margin: 0 auto; padding: 0 40px 88px; }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .masthead { display: grid; grid-template-columns: 330px 1fr auto; gap: 24px; align-items: end; padding: 48px 0 34px; border-bottom: 1px solid var(--rule); }
+    .brand-pair { display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; min-width: 0; }
+    .brand-lockup { display: inline-flex; align-items: center; justify-content: center; min-height: 24px; color: var(--ink-muted); font-family: var(--mono); font-size: 11px; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+    .brand-lockup.logo-loaded { min-height: 42px; padding: 5px 7px; border: 1px solid rgba(232,224,212,.08); border-radius: 4px; background: rgba(232,224,212,.035); box-shadow: inset 0 1px 0 rgba(255,255,255,.035); }
+    .brand-lockup img { display: block; width: auto; height: auto; opacity: 0; filter: grayscale(1) saturate(.22) sepia(.08) brightness(.82) contrast(.9); transition: opacity .2s ease; }
+    .brand-lockup.logo-loaded img { opacity: .72; }
+    .logo-active-value { max-width: 92px; max-height: 47px; }
+    .logo-trusted-advisor { max-width: 122px; max-height: 36px; }
+    .brand-lockup.logo-loaded .brand-text { display: none; }
+    .brand-lockup.logo-missing .brand-text { display: inline-block; }
+    .brand-divider { width: 34px; height: 1px; background: var(--rule-light); }
+    .masthead-title { justify-self: center; color: var(--ink-faint); font-family: var(--mono); font-size: 11px; text-align: center; text-transform: uppercase; white-space: nowrap; }
+    .masthead-meta { justify-self: end; color: var(--ink-faint); font-family: var(--mono); font-size: 11px; line-height: 1.6; text-align: right; }
+    .hero { padding: 76px 0 66px; border-bottom: 1px solid var(--rule); }
+    .eyebrow, .section-label, .overview-badge, .kernbefund-label, .meta-line, .direction-kicker, .footer-brand, .footer-note, .intent-label { font-family: var(--mono); text-transform: uppercase; }
+    .eyebrow { margin-bottom: 28px; color: var(--accent); font-size: 11px; line-height: 1.4; }
+    .hero-headline { max-width: 760px; margin-bottom: 24px; color: var(--warm-white); font-family: var(--serif); font-size: clamp(42px,8vw,68px); font-weight: 700; line-height: 1.02; }
+    .hero-subline { max-width: 690px; margin-bottom: 38px; color: var(--ink-muted); font-family: var(--serif); font-size: clamp(20px,3.1vw,28px); font-style: italic; line-height: 1.42; }
+    .hero-body, .section-body { max-width: 660px; color: var(--ink-muted); font-size: 16px; line-height: 1.78; }
+    .hero-body p, .section-body p { margin-bottom: 17px; }
+    .hero-body p:last-child, .section-body p:last-child { margin-bottom: 0; }
+    .meta-line { margin-top: 42px; color: var(--ink-faint); font-size: 11px; line-height: 1.5; }
+    .section { position: relative; padding: 62px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 28px; }
+    .section:last-of-type { border-bottom: 0; }
+    .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; color: var(--ink-faint); font-size: 11px; line-height: 1.45; }
+    .section-label::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+    .section-headline { max-width: 690px; margin-bottom: 24px; color: var(--warm-white); font-family: var(--serif); font-size: clamp(29px,4.2vw,39px); font-weight: 700; line-height: 1.16; }
+    .pullquote { max-width: 680px; margin: 34px 0 40px; padding: 5px 0 5px 28px; border-left: 3px solid var(--accent); }
+    .pullquote-text { color: var(--warm-white); font-family: var(--serif); font-size: clamp(20px,2.8vw,25px); font-style: italic; line-height: 1.42; }
+    .kernbefund, .definition-box, .intent-box { max-width: 700px; margin-top: 42px; border: 1px solid var(--rule-light); border-left: 3px solid var(--accent); border-radius: 4px; background: linear-gradient(135deg, rgba(255,255,255,.025), rgba(255,255,255,.005)), var(--bg-card); box-shadow: 0 18px 60px rgba(0,0,0,.16); }
+    .kernbefund { padding: 27px 31px; }
+    .kernbefund-label { margin-bottom: 12px; color: var(--accent); font-size: 10px; line-height: 1.4; }
+    .kernbefund-text { color: var(--ink-muted); font-size: 15px; line-height: 1.66; }
+    .definition-box { padding: 25px 30px 27px; }
+    .definition-label { margin-bottom: 12px; color: var(--accent-soft); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+    .definition-text { color: var(--cream); font-family: var(--serif); font-size: 20px; font-style: italic; line-height: 1.55; }
+    .intent-box { margin: 42px 0 0; padding: 28px 31px 30px; border-left-color: var(--accent-soft); background: linear-gradient(135deg,rgba(143,111,78,.13),rgba(255,255,255,.012)),var(--bg-raised); }
+    .intent-label { margin-bottom: 14px; color: var(--accent-pale); font-size: 10px; }
+    .intent-text { color: var(--ink-muted); font-size: 15px; line-height: 1.68; }
+    .intent-text strong, .kernbefund-text strong, .section-body strong { color: var(--cream); font-weight: 500; }
+    .overview-intro { max-width: 630px; margin-bottom: 34px; color: var(--ink-muted); }
+    .overview-grid { display: grid; gap: 1px; margin: 36px 0 4px; overflow: hidden; border: 1px solid var(--rule); border-radius: 4px; background: var(--rule); }
+    .overview-row { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 16px; align-items: center; min-height: 58px; padding: 14px 20px; background: var(--bg-raised); color: inherit; text-decoration: none; transition: background .2s ease, transform .2s ease; }
+    .overview-row:hover, .overview-row:focus-visible { background: #211d19; transform: translateX(3px); outline: none; }
+    .overview-num { color: var(--ink-faint); font-family: var(--mono); font-size: 12px; }
+    .overview-title { color: var(--cream); font-size: 14px; line-height: 1.35; }
+    .overview-badge { padding: 4px 10px; border: 1px solid rgba(196,134,42,.2); border-radius: 3px; background: rgba(196,134,42,.08); color: var(--accent-pale); font-size: 10px; line-height: 1.3; white-space: nowrap; }
+    .badge-einordnung { border-color: rgba(143,111,78,.35); background: rgba(143,111,78,.11); color: #c3aa8b; }
+    .badge-eigentuemerfrage { border-color: rgba(196,134,42,.28); background: rgba(196,134,42,.12); color: var(--accent); }
+    .badge-pruefrahmen { border-color: rgba(153,143,124,.23); background: rgba(153,143,124,.08); color: #bfb5a5; }
+    .badge-kooperation { border-color: rgba(212,168,83,.3); background: rgba(212,168,83,.1); color: var(--accent-pale); }
+    .direction-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; max-width: 760px; margin: 36px 0 0; overflow: hidden; border: 1px solid var(--rule); border-radius: 4px; background: var(--rule); }
+    .direction-card { min-height: 210px; padding: 26px 25px; background: var(--bg-raised); }
+    .direction-card:last-child { grid-column: 1 / -1; min-height: 0; }
+    .direction-kicker { margin-bottom: 18px; color: var(--ink-faint); font-size: 10px; }
+    .direction-title { margin-bottom: 12px; color: var(--warm-white); font-family: var(--serif); font-size: 22px; line-height: 1.2; }
+    .direction-text { color: var(--ink-muted); font-size: 14px; line-height: 1.62; }
+    .footer { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: end; margin-top: 40px; padding: 40px 0 0; border-top: 1px solid var(--rule); }
+    .footer-brand { color: var(--ink-faint); font-size: 11px; line-height: 1.65; }
+    .footer-contact { color: var(--ink-faint); font-size: 13px; line-height: 1.65; text-align: right; font-style: normal; }
+    .footer-contact a { color: var(--ink-muted); text-decoration: none; }
+    @media (min-width: 981px) { .section-label { position: relative; left: -166px; display: block; width: 140px; height: 0; margin-bottom: 0; transform: translateY(7px); } .section-label::after { display: none; } }
+    @media (max-width: 820px) { .page { padding: 0 28px 72px; } .masthead { grid-template-columns: 1fr; gap: 14px; align-items: start; } .brand-pair { flex-wrap: wrap; } .masthead-title, .masthead-meta { justify-self: start; text-align: left; } .hero { padding: 58px 0 54px; } .section { padding: 52px 0; } .direction-grid { grid-template-columns: 1fr; } .direction-card:last-child { grid-column: auto; } .footer { grid-template-columns: 1fr; } .footer-contact { text-align: left; } }
+    @media (max-width: 640px) { body { font-size: 15px; } .page { padding: 0 20px 60px; } .brand-pair { gap: 11px; } .brand-divider { width: 22px; } .hero-headline { font-size: 38px; } .hero-subline { font-size: 20px; } .overview-row { grid-template-columns: 34px 1fr; gap: 12px; padding: 16px; } .overview-badge { grid-column: 2; justify-self: start; } .kernbefund, .definition-box, .intent-box { padding: 23px 22px; } .pullquote { padding-left: 20px; } }
   </style>
 </head>
 <body>
   <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
-
   <main class="page">
     <header class="masthead" aria-label="Dokumentkopf">
       <div class="brand-pair" aria-label="Marken">
-        <span class="brand-lockup">
-          <img src="/assets/active-value-logo.svg" alt="active value" class="logo logo-active-value">
-          <span class="brand-text">active value</span>
-        </span>
+        <span class="brand-lockup"><img data-logo-base64="assets/active-value-logo.b64" alt="active value" class="logo logo-active-value"><span class="brand-text">active value</span></span>
         <span class="brand-divider" aria-hidden="true"></span>
-        <span class="brand-lockup">
-          <img src="/assets/avs-logo.svg" alt="AvS Advisors" class="logo logo-avs">
-          <span class="brand-text">AvS Advisors</span>
-        </span>
+        <span class="brand-lockup"><img data-logo-base64="assets/trusted-advisor-logo.b64" alt="The Trusted Advisor" class="logo logo-trusted-advisor"><span class="brand-text">The Trusted Advisor</span></span>
       </div>
       <div class="masthead-title">Die Anschlussfähigkeit des Unternehmens</div>
       <div class="masthead-meta">Vertraulich<br>Mai 2026</div>
@@ -642,15 +111,17 @@
       <h1 class="hero-headline" id="hero-title">Nachfolgefähigkeit bekommt eine zweite Dimension.</h1>
       <p class="hero-subline">Im KI-Zeitalter reicht es nicht mehr zu klären, wer ein Unternehmen übernimmt. Entscheidend wird, ob das Unternehmen so organisiert ist, dass die nächste Generation mit Daten, KI, Wissen, Prozessen und Entscheidungen weiter Wert schaffen kann.</p>
       <div class="hero-body">
-        <p>Dieses Essay formuliert eine Beobachtung an der Schnittstelle von Unternehmerfamilien, Family Offices, Beiräten und technologischer Transformation. Es ist kein fertiges Angebot. Es ist eine Einladung, ein mögliches neues Beratungsfeld zu prüfen: die Anschlussfähigkeit des Unternehmens im KI-Zeitalter.</p>
+        <p>Dieses Essay formuliert eine konkrete Annäherung an AvS Advisors. Der Einstiegspunkt ist bewusst eng gewählt: Nachfolge- und Übergabefähigkeit. Nicht, weil AvS darauf reduziert wäre, sondern weil sich dort Unternehmerfamilien, Family Offices, Beiräte, Governance und operative Zukunftsfähigkeit besonders präzise berühren.</p>
+        <p>Es geht nicht um ein fertiges Angebot und nicht um einen allgemeinen KI-Pitch. Es geht um einen gemeinsamen Prüfgedanken: ob Nachfolgeberatung im KI-Zeitalter eine zweite, bisher wenig bearbeitete Dimension bekommt.</p>
       </div>
       <div class="meta-line">Vertrauliche strategische Skizze · active value / AvS Advisors · Mai 2026</div>
     </section>
 
     <section class="section fade-in" aria-labelledby="overview-title">
       <div class="section-label">Übersicht</div>
-      <h2 class="section-headline" id="overview-title">Neun Gedanken. Eine neue Eigentümerfrage.</h2>
-      <p class="overview-intro">Die folgenden Abschnitte sind als argumentative Bewegung angelegt. Von der vertrauten Nachfolgelogik zur neuen Frage, ob ein Unternehmen in einer KI-geprägten Umwelt überhaupt anschlussfähig übergeben wird.</p>
+      <h2 class="section-headline" id="overview-title">Neun Gedanken. Ein möglicher Kooperationsraum.</h2>
+      <p class="overview-intro">Die folgenden Abschnitte sind als argumentative Bewegung angelegt. Sie beginnen bei einer konkreten These zur Schnittstelle AvS / active value und führen dann in die neue Eigentümerfrage: ob ein Unternehmen in einer KI-geprägten Umwelt überhaupt anschlussfähig übergeben wird.</p>
+      <aside class="intent-box"><div class="intent-label">Arbeitshypothese</div><p class="intent-text"><strong>AvS bringt den Zugang zu Eigentümerfamilien, Family Offices, Beiräten und Nachfolgefragen. active value bringt die Fähigkeit, digitale und KI-bezogene Anschlussfähigkeit operativ sichtbar zu machen.</strong> Der mögliche Kooperationsraum liegt nicht in KI-Beratung als Selbstzweck, sondern in der Frage, ob Unternehmen so übergeben, begleitet oder beurteilt werden, dass die nächste Eigentümergeneration weiter Wert schaffen kann.</p></aside>
       <nav class="overview-grid" aria-label="Abschnittsübersicht">
         <a class="overview-row" href="#moment"><span class="overview-num">01</span><span class="overview-title">Der Moment</span><span class="overview-badge">Beobachtung</span></a>
         <a class="overview-row" href="#alte-gewissheit"><span class="overview-num">02</span><span class="overview-title">Die alte Gewissheit</span><span class="overview-badge badge-einordnung">Einordnung</span></a>
@@ -666,274 +137,110 @@
 
     <section class="section fade-in" id="moment" aria-labelledby="moment-title">
       <div class="section-label">01 · Der Moment</div>
-      <h2 class="section-headline" id="moment-title">Ein Thema entsteht dort, wo Nachfolge und KI aufeinandertreffen.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Nachfolgefähigkeit bekommt eine zweite Dimension.“</p>
-      </div>
+      <h2 class="section-headline" id="moment-title">Der Anlass ist eine präzise Schnittstelle, nicht KI im Allgemeinen.</h2>
+      <div class="pullquote"><p class="pullquote-text">„Nachfolgefähigkeit bekommt eine zweite Dimension.“</p></div>
       <div class="section-body">
+        <p>Die These dieser Skizze lautet: Für den Bereich der Nachfolge- und Übergabefähigkeit entsteht ein neuer Beratungsraum. Er liegt dort, wo Eigentümerlogik, Family Office Perspektive, Beirat, Governance und technologische Entwicklungsfähigkeit zusammenkommen.</p>
+        <p>Genau dort könnte die Verbindung von AvS Advisors und active value interessant werden. AvS muss dafür nicht zu einer Technologieberatung werden. active value muss dafür nicht in die Rolle einer Family Governance Beratung gehen. Entscheidend wäre die gemeinsame Übersetzung einer neuen Eigentümerfrage.</p>
         <p>Über viele Jahre war die Frage der Unternehmensnachfolge zwar anspruchsvoll, aber in ihren Grundkategorien vertraut. Wer übernimmt Verantwortung? Wie wird Eigentum übertragen? Welche Rolle spielt die Familie? Wie bleibt Führung handlungsfähig? Wie werden Vermögen, Unternehmen und Governance so geordnet, dass Stabilität über Generationen möglich bleibt?</p>
-        <p>Diese Fragen bleiben gültig.</p>
-        <p>Aber sie reichen nicht mehr aus.</p>
+        <p>Diese Fragen bleiben gültig. Aber sie reichen nicht mehr aus.</p>
         <p>Seit dem Durchbruch generativer KI entsteht eine zweite Ebene der Nachfolgefähigkeit. Sie betrifft nicht nur die Person, die ein Unternehmen übernimmt. Sie betrifft das System, das übernommen wird.</p>
-        <p>Denn die nächste Generation übernimmt nicht nur Anteile, Rollen und Verantwortung. Sie übernimmt Datenstrukturen, Prozesslogiken, implizites Wissen, technologische Abhängigkeiten, Kundenzugänge, Entscheidungswege und eine Organisation, die in sehr unterschiedlichem Maß auf eine KI-geprägte Welt vorbereitet ist.</p>
       </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Die Nachfolgefrage verschiebt sich. Es geht nicht mehr nur darum, wer ein Unternehmen übernimmt. Es geht darum, ob das Unternehmen so organisiert ist, dass die nächste Generation in einer von KI geprägten Welt weiter Wert schaffen kann.</p>
-      </aside>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Die Nachfolgefrage verschiebt sich. Es geht nicht mehr nur darum, wer ein Unternehmen übernimmt. Es geht darum, ob das Unternehmen so organisiert ist, dass die nächste Generation in einer von KI geprägten Welt weiter Wert schaffen kann.</p></aside>
     </section>
 
     <section class="section fade-in" id="alte-gewissheit" aria-labelledby="alte-gewissheit-title">
       <div class="section-label">02 · Die alte Gewissheit</div>
       <h2 class="section-headline" id="alte-gewissheit-title">Ein gesundes Unternehmen war lange ein übergabefähiges Unternehmen.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Wer ein wirtschaftlich stabiles Unternehmen übergab, übergab lange auch Zukunftsfähigkeit.“</p>
-      </div>
-      <div class="section-body">
-        <p>Für Unternehmerfamilien war Zukunftsfähigkeit lange entlang vertrauter Kriterien beurteilbar: Marktstellung, Kundenstamm, Ertragskraft, Führungsteam, Reputation, Finanzierung, Prozesse, Standort, Produktqualität und familiäre Governance.</p>
-        <p>Wer diese Grundlagen geschaffen hatte, konnte mit berechtigtem Selbstbewusstsein sagen: Die nächste Generation übernimmt ein stabiles Unternehmen.</p>
-        <p>Diese Sicherheit war nicht naiv. Sie beruhte auf Erfahrung. Unternehmerinnen und Unternehmer konnten ihre Märkte lesen, Risiken einschätzen, Kundenbeziehungen bewerten und operative Stärke von Schwäche unterscheiden. Sie wussten, woran man Substanz erkennt.</p>
-        <p>Genau darin lag die Kraft familiengeführter Unternehmen: langfristiger Blick, Nähe zum Geschäft, Verantwortung über Quartale hinaus, Vertrauen in Menschen und Beziehungen.</p>
-        <p>Doch diese Logik setzt voraus, dass die Maßstäbe von Zukunftsfähigkeit über längere Zeit stabil bleiben.</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Die klassische Nachfolgeprüfung war plausibel, solange die Wertschöpfungslogik des Unternehmens weitgehend vertraut blieb. Genau diese Vertrautheit wird durch KI nicht aufgehoben, aber ergänzt.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Wer ein wirtschaftlich stabiles Unternehmen übergab, übergab lange auch Zukunftsfähigkeit.“</p></div>
+      <div class="section-body"><p>Für Unternehmerfamilien war Zukunftsfähigkeit lange entlang vertrauter Kriterien beurteilbar: Marktstellung, Kundenstamm, Ertragskraft, Führungsteam, Reputation, Finanzierung, Prozesse, Standort, Produktqualität und familiäre Governance.</p><p>Wer diese Grundlagen geschaffen hatte, konnte mit berechtigtem Selbstbewusstsein sagen: Die nächste Generation übernimmt ein stabiles Unternehmen.</p><p>Diese Sicherheit war nicht naiv. Sie beruhte auf Erfahrung. Unternehmerinnen und Unternehmer konnten ihre Märkte lesen, Risiken einschätzen, Kundenbeziehungen bewerten und operative Stärke von Schwäche unterscheiden. Sie wussten, woran man Substanz erkennt.</p><p>Doch diese Logik setzt voraus, dass die Maßstäbe von Zukunftsfähigkeit über längere Zeit stabil bleiben.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Die klassische Nachfolgeprüfung war plausibel, solange die Wertschöpfungslogik des Unternehmens weitgehend vertraut blieb. Genau diese Vertrautheit wird durch KI nicht aufgehoben, aber ergänzt.</p></aside>
     </section>
 
     <section class="section fade-in" id="neue-unsicherheit" aria-labelledby="neue-unsicherheit-title">
       <div class="section-label">03 · Die neue Unsicherheit</div>
       <h2 class="section-headline" id="neue-unsicherheit-title">KI verändert die Maßstäbe, nach denen Zukunftsfähigkeit beurteilt wird.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Der Eigentümer verliert nicht seine Erfahrung. Er verliert die Gewissheit, ob seine vertrauten Maßstäbe noch ausreichen.“</p>
-      </div>
-      <div class="section-body">
-        <p>Die neue Unsicherheit entsteht nicht, weil Familienunternehmen plötzlich schwach wären. Sie entsteht, weil KI eine andere Art von Veränderung auslöst als viele Digitalisierungswellen zuvor.</p>
-        <p>Digitalisierung war oft noch als Projekt beschreibbar: Website, ERP, CRM, Shop, Cloud, Datenbank, Prozessautomatisierung. Man konnte Budgets vergeben, Systeme auswählen, Dienstleister beauftragen und Fortschritt in Projektplänen messen.</p>
-        <p>KI greift tiefer.</p>
-        <p>KI verändert nicht nur Werkzeuge. KI verändert die Bedingungen von Arbeit, Wissen, Entscheidung und Wertschöpfung. Sie verändert, wie Informationen gefunden werden, wie Entscheidungen vorbereitet werden, wie Prozesse automatisiert werden, wie Kunden suchen, vergleichen und kaufen, wie Wissen verfügbar gemacht wird und wie schnell neue Geschäftsmodelle getestet werden können.</p>
-        <p>Genau daraus entsteht der neue Eigentümer-Pain.</p>
-        <p>Ein Unternehmer kann sein Unternehmen verstehen und trotzdem nicht sicher beurteilen, ob es an diese neue Logik anschlussfähig ist. Er kann ein gesundes Unternehmen führen und zugleich spüren, dass Gesundheit nach den alten Kriterien nicht mehr alle Fragen beantwortet.</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Die Unsicherheit betrifft nicht primär KI als Technologie. Sie betrifft die Urteilsfähigkeit über Zukunftsfähigkeit. Genau hier entsteht ein neuer Beratungsbedarf.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Der Eigentümer verliert nicht seine Erfahrung. Er verliert die Gewissheit, ob seine vertrauten Maßstäbe noch ausreichen.“</p></div>
+      <div class="section-body"><p>Die neue Unsicherheit entsteht nicht, weil Familienunternehmen plötzlich schwach wären. Sie entsteht, weil KI eine andere Art von Veränderung auslöst als viele Digitalisierungswellen zuvor.</p><p>Digitalisierung war oft noch als Projekt beschreibbar: Website, ERP, CRM, Shop, Cloud, Datenbank, Prozessautomatisierung. KI greift tiefer.</p><p>KI verändert nicht nur Werkzeuge. KI verändert die Bedingungen von Arbeit, Wissen, Entscheidung und Wertschöpfung. Sie verändert, wie Informationen gefunden werden, wie Entscheidungen vorbereitet werden, wie Prozesse automatisiert werden, wie Kunden suchen, vergleichen und kaufen, wie Wissen verfügbar gemacht wird und wie schnell neue Geschäftsmodelle getestet werden können.</p><p>Ein Unternehmer kann sein Unternehmen verstehen und trotzdem nicht sicher beurteilen, ob es an diese neue Logik anschlussfähig ist.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Die Unsicherheit betrifft nicht primär KI als Technologie. Sie betrifft die Urteilsfähigkeit über Zukunftsfähigkeit. Genau hier entsteht ein neuer Beratungsbedarf.</p></aside>
     </section>
 
     <section class="section fade-in" id="blinder-fleck" aria-labelledby="blinder-fleck-title">
       <div class="section-label">04 · Der blinde Fleck der Nachfolge</div>
       <h2 class="section-headline" id="blinder-fleck-title">Übergeben wird nicht nur Eigentum. Übergeben wird ein System.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Die nächste Generation übernimmt nicht nur ein Unternehmen. Sie übernimmt dessen Anschlussfähigkeit oder dessen fehlende Anschlussfähigkeit.“</p>
-      </div>
-      <div class="section-body">
-        <p>In vielen Nachfolgeprozessen wird sehr genau geprüft, wer Anteile hält, wer Führung übernimmt, wie Rollen verteilt werden, welche steuerlichen Strukturen greifen, wie Gremien besetzt sind und wie Vermögen geschützt wird.</p>
-        <p>Seltener wird mit derselben Präzision gefragt, welches operative und digitale System die nächste Generation tatsächlich übernimmt.</p>
-        <p>Wo liegt das Wissen des Unternehmens? In Köpfen, Dateien, Systemen oder Prozessen? Welche Daten sind vorhanden, aber nicht nutzbar? Welche Abläufe funktionieren nur, weil erfahrene Menschen täglich improvisieren? Welche Entscheidungen hängen an Einzelpersonen? Welche Kundenschnittstellen gehören dem Unternehmen selbst und welche liegen längst bei Plattformen, Suchsystemen oder Intermediären? Welche Systeme sind offen genug, um KI, Automatisierung und neue Wertschöpfung aufzunehmen?</p>
-        <p>Das sind keine rein technischen Fragen. Es sind Fragen der Übergabefähigkeit.</p>
-        <p>Denn die nächste Generation übernimmt nicht nur eine Bilanz. Sie übernimmt eine Organisation, deren Wissen, Daten, Prozesse und Entscheidungswege entweder entwickelbar sind oder blockieren.</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Der blinde Fleck der Nachfolge liegt nicht im sichtbaren Eigentum, sondern in der unsichtbaren Architektur des Unternehmens: Wissen, Daten, Prozesse, Systeme, Verantwortung und digitale Kundenzugänge.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Die nächste Generation übernimmt nicht nur ein Unternehmen. Sie übernimmt dessen Anschlussfähigkeit oder dessen fehlende Anschlussfähigkeit.“</p></div>
+      <div class="section-body"><p>In vielen Nachfolgeprozessen wird sehr genau geprüft, wer Anteile hält, wer Führung übernimmt, wie Rollen verteilt werden, welche steuerlichen Strukturen greifen, wie Gremien besetzt sind und wie Vermögen geschützt wird.</p><p>Seltener wird mit derselben Präzision gefragt, welches operative und digitale System die nächste Generation tatsächlich übernimmt.</p><p>Wo liegt das Wissen des Unternehmens? Welche Daten sind vorhanden, aber nicht nutzbar? Welche Abläufe funktionieren nur, weil erfahrene Menschen täglich improvisieren? Welche Kundenschnittstellen gehören dem Unternehmen selbst und welche liegen längst bei Plattformen, Suchsystemen oder Intermediären?</p><p>Das sind keine rein technischen Fragen. Es sind Fragen der Übergabefähigkeit.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Der blinde Fleck der Nachfolge liegt nicht im sichtbaren Eigentum, sondern in der unsichtbaren Architektur des Unternehmens: Wissen, Daten, Prozesse, Systeme, Verantwortung und digitale Kundenzugänge.</p></aside>
     </section>
 
     <section class="section fade-in" id="anschlussfaehigkeit" aria-labelledby="anschlussfaehigkeit-title">
       <div class="section-label">05 · Die Anschlussfähigkeit</div>
       <h2 class="section-headline" id="anschlussfaehigkeit-title">Die eigentliche Frage lautet nicht: Nutzt das Unternehmen KI?</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Ist das Unternehmen so organisiert, dass es im KI-Zeitalter weiter Wert schaffen kann?“</p>
-      </div>
-      <div class="section-body">
-        <p>Anschlussfähigkeit beschreibt nicht, ob ein Unternehmen bereits bestimmte Tools nutzt. Sie beschreibt, ob ein Unternehmen in der Lage ist, unter KI-Bedingungen weiter zu lernen, zu entscheiden und Wert zu schaffen.</p>
-        <p>Dazu gehören Daten, die nicht nur gespeichert, sondern nutzbar sind. Wissen, das nicht nur in Erfahrungsträgern liegt, sondern zugänglich gemacht werden kann. Prozesse, die nicht nur funktionieren, sondern verstehbar, verbesserbar und automatisierbar sind. Entscheidungen, die nicht nur intuitiv getroffen werden, sondern durch bessere Informationen unterstützt werden können. Kundenzugänge, die nicht nur historisch gewachsen sind, sondern in neuen digitalen Such- und Empfehlungssystemen bestehen können.</p>
-        <p>Anschlussfähigkeit ist damit kein Ersatz für Unternehmertum. Sie ist dessen neue Voraussetzung.</p>
-        <p>Ein Unternehmen muss nicht jede KI-Entwicklung vorhersehen. Aber es muss so gebaut sein, dass es relevante Entwicklungen aufnehmen, bewerten und produktiv nutzen kann.</p>
-      </div>
-      <aside class="definition-box">
-        <div class="definition-label">Definition</div>
-        <p class="definition-text">Anschlussfähigkeit meint die überprüfbare Fähigkeit eines Unternehmens, in einer KI-geprägten Umwelt Wissen, Daten, Arbeit, Entscheidungen, Prozesse, Kundeninteraktion und Geschäftsmodelllogik weiterzuentwickeln.</p>
-      </aside>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Nachfolgefähigkeit endet nicht bei der Übergabe. Sie muss künftig auch die Entwicklungsfähigkeit des Unternehmens nach der Übergabe bewerten.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Ist das Unternehmen so organisiert, dass es im KI-Zeitalter weiter Wert schaffen kann?“</p></div>
+      <div class="section-body"><p>Anschlussfähigkeit beschreibt nicht, ob ein Unternehmen bereits bestimmte Tools nutzt. Sie beschreibt, ob ein Unternehmen in der Lage ist, unter KI-Bedingungen weiter zu lernen, zu entscheiden und Wert zu schaffen.</p><p>Dazu gehören Daten, die nicht nur gespeichert, sondern nutzbar sind. Wissen, das nicht nur in Erfahrungsträgern liegt, sondern zugänglich gemacht werden kann. Prozesse, die nicht nur funktionieren, sondern verstehbar, verbesserbar und automatisierbar sind. Entscheidungen, die nicht nur intuitiv getroffen werden, sondern durch bessere Informationen unterstützt werden können.</p><p>Anschlussfähigkeit ist damit kein Ersatz für Unternehmertum. Sie ist dessen neue Voraussetzung.</p></div>
+      <aside class="definition-box"><div class="definition-label">Definition</div><p class="definition-text">Anschlussfähigkeit meint die überprüfbare Fähigkeit eines Unternehmens, in einer KI-geprägten Umwelt Wissen, Daten, Arbeit, Entscheidungen, Prozesse, Kundeninteraktion und Geschäftsmodelllogik weiterzuentwickeln.</p></aside>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Nachfolgefähigkeit endet nicht bei der Übergabe. Sie muss künftig auch die Entwicklungsfähigkeit des Unternehmens nach der Übergabe bewerten.</p></aside>
     </section>
 
     <section class="section fade-in" id="kein-it-thema" aria-labelledby="kein-it-thema-title">
       <div class="section-label">06 · Warum das kein IT-Thema ist</div>
       <h2 class="section-headline" id="kein-it-thema-title">Digitale Anschlussfähigkeit ist Eigentümerverantwortung.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Der Unternehmer muss kein KI-Experte werden. Aber er darf die Frage der Anschlussfähigkeit nicht vollständig delegieren.“</p>
-      </div>
-      <div class="section-body">
-        <p>Wenn KI nur eine Softwarefrage wäre, könnte man sie an IT, Digitalabteilung oder externe Dienstleister delegieren. Aber KI berührt mehr: Verantwortung, Risiko, Wertentwicklung, Mitarbeiter, Kultur, Kundenzugang, Geschwindigkeit, Datenhoheit und Governance.</p>
-        <p>Deshalb gehört die Frage der Anschlussfähigkeit auf die Ebene von Eigentümern, Beiräten, Family Offices und Nachfolgeprozessen.</p>
-        <p>Eigentümer müssen nicht jedes Modell verstehen. Sie müssen nicht beurteilen, welche technische Architektur im Detail richtig ist. Aber sie müssen erkennen, welche Fragen künftig gestellt werden müssen, bevor ein Unternehmen übergeben, verkauft, erweitert oder in die nächste Generation geführt wird.</p>
-        <p>Welche Teile des Unternehmens sind auf KI vorbereitet? Welche nicht? Wo entstehen neue Risiken? Wo entstehen neue Chancen? Wo fehlen Kompetenzen im Management oder im Beirat? Wo braucht die Next Gen Mandat, Lernraum und Verantwortung?</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Wenn KI Arbeit, Wissen, Entscheidung und Wertschöpfung berührt, ist Anschlussfähigkeit kein operatives Digitalprojekt. Sie ist Teil moderner Eigentümer- und Governance-Verantwortung.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Der Unternehmer muss kein KI-Experte werden. Aber er darf die Frage der Anschlussfähigkeit nicht vollständig delegieren.“</p></div>
+      <div class="section-body"><p>Wenn KI nur eine Softwarefrage wäre, könnte man sie an IT, Digitalabteilung oder externe Dienstleister delegieren. Aber KI berührt mehr: Verantwortung, Risiko, Wertentwicklung, Mitarbeiter, Kultur, Kundenzugang, Geschwindigkeit, Datenhoheit und Governance.</p><p>Deshalb gehört die Frage der Anschlussfähigkeit auf die Ebene von Eigentümern, Beiräten, Family Offices und Nachfolgeprozessen.</p><p>Eigentümer müssen nicht jedes Modell verstehen. Aber sie müssen erkennen, welche Fragen künftig gestellt werden müssen, bevor ein Unternehmen übergeben, verkauft, erweitert oder in die nächste Generation geführt wird.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Wenn KI Arbeit, Wissen, Entscheidung und Wertschöpfung berührt, ist Anschlussfähigkeit kein operatives Digitalprojekt. Sie ist Teil moderner Eigentümer- und Governance-Verantwortung.</p></aside>
     </section>
 
     <section class="section fade-in" id="leerstelle" aria-labelledby="leerstelle-title">
       <div class="section-label">07 · Die Leerstelle im Markt</div>
       <h2 class="section-headline" id="leerstelle-title">Zwischen Nachfolgeberatung und KI-Beratung fehlt ein strategischer Raum.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Viele können Nachfolge. Viele können Technologie. Wenige verbinden beides aus der Perspektive des Eigentümers.“</p>
-      </div>
-      <div class="section-body">
-        <p>Der Markt kennt juristische Nachfolgegestaltung, steuerliche Strukturierung, Family Governance, Executive Search, Beiratsbesetzung, IT-Beratung, KI-Workshops, Prozessautomatisierung und Digitalisierungsprojekte.</p>
-        <p>Was häufig fehlt, ist ein Raum dazwischen.</p>
-        <p>Ein Raum, in dem eine Unternehmerfamilie nicht gefragt wird, welche Software sie einsetzen möchte, sondern ob ihr Unternehmen an eine neue Wertschöpfungslogik anschlussfähig ist.</p>
-        <p>Ein Raum, in dem ein Beirat nicht operativ in KI eintauchen muss, aber die richtigen Fragen stellen kann.</p>
-        <p>Ein Raum, in dem ein Family Office nicht nur Vermögen, Beteiligungen und Reporting betrachtet, sondern auch die technologische Entwicklungsfähigkeit operativer Unternehmen.</p>
-        <p>Ein Raum, in dem die Next Gen nicht als ungeduldige Digitalfraktion erscheint, sondern als künftige Eigentümergeneration, die ein lernfähiges System braucht.</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Die Marktlücke liegt nicht in einem weiteren KI-Angebot. Sie liegt in einem strategischen Übersetzungsraum zwischen Eigentümerlogik, Governance, Nachfolge und technologischer Realität.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Viele können Nachfolge. Viele können Technologie. Wenige verbinden beides aus der Perspektive des Eigentümers.“</p></div>
+      <div class="section-body"><p>Der Markt kennt juristische Nachfolgegestaltung, steuerliche Strukturierung, Family Governance, Executive Search, Beiratsbesetzung, IT-Beratung, KI-Workshops, Prozessautomatisierung und Digitalisierungsprojekte.</p><p>Was häufig fehlt, ist ein Raum dazwischen. Ein Raum, in dem eine Unternehmerfamilie nicht gefragt wird, welche Software sie einsetzen möchte, sondern ob ihr Unternehmen an eine neue Wertschöpfungslogik anschlussfähig ist.</p><p>Ein Raum, in dem ein Family Office nicht nur Vermögen, Beteiligungen und Reporting betrachtet, sondern auch die technologische Entwicklungsfähigkeit operativer Unternehmen. Ein Raum, in dem ein Beirat nicht operativ in KI eintauchen muss, aber die richtigen Fragen stellen kann.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Die Marktlücke liegt nicht in einem weiteren KI-Angebot. Sie liegt in einem strategischen Übersetzungsraum zwischen Eigentümerlogik, Governance, Nachfolge und technologischer Realität.</p></aside>
     </section>
 
     <section class="section fade-in" id="schnittstelle" aria-labelledby="schnittstelle-title">
       <div class="section-label">08 · Die Schnittstelle AvS / active value</div>
       <h2 class="section-headline" id="schnittstelle-title">Menschen, Rollen, Vertrauen und Technologie müssen gemeinsam betrachtet werden.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Die Anschlussfähigkeit eines Unternehmens entsteht nicht allein aus Technologie. Sie entsteht aus dem Zusammenspiel von Menschen, Systemen und Verantwortung.“</p>
-      </div>
-      <div class="section-body">
-        <p>Genau hier könnte eine besondere Schnittstelle entstehen.</p>
-        <p>AvS Advisors bewegt sich in einem Umfeld, in dem Vertrauen, Rollen, Eigentümerlogik, Führung, Nachfolge, Beirat und Family Governance entscheidend sind. Es geht um Menschen, Verantwortung, Übergabe, Entscheidungsfähigkeit und den richtigen Umgang mit Komplexität.</p>
-        <p>active value kommt aus einer anderen Richtung. Aus digitaler Wertschöpfung, KI, Daten, Prozessen, Plattformen, E-Commerce, Technologie, Prototyping und Umsetzungsrealität. Also aus der Frage, wie abstrakte Zukunftsfähigkeit praktisch prüfbar und entwickelbar wird.</p>
-        <p>Allein wäre jede Perspektive unvollständig.</p>
-        <p>Eine rein technologische KI-Beratung erreicht Eigentümerfamilien oft nicht auf der richtigen Ebene. Eine reine Governance-Beratung kann digitale und KI-bezogene Anschlussfähigkeit oft nur begrenzt operativ prüfen.</p>
-        <p>Gemeinsam könnte daraus ein Ansatz entstehen, der die menschliche und technologische Seite der Nachfolge verbindet.</p>
-      </div>
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Die Stärke der Idee liegt in der Komplementarität: AvS bringt Zugang, Vertrauen und Governance-Kompetenz. active value bringt digitale Diagnosefähigkeit, KI-Verständnis und operative Übersetzung.</p>
-      </aside>
+      <div class="pullquote"><p class="pullquote-text">„Die Anschlussfähigkeit eines Unternehmens entsteht nicht allein aus Technologie. Sie entsteht aus dem Zusammenspiel von Menschen, Systemen und Verantwortung.“</p></div>
+      <div class="section-body"><p>AvS Advisors bewegt sich in einem Umfeld, in dem Vertrauen, Rollen, Eigentümerlogik, Führung, Nachfolge, Beirat, Family Office Perspektiven und Family Governance entscheidend sind.</p><p>active value kommt aus digitaler Wertschöpfung, KI, Daten, Prozessen, Plattformen, E-Commerce, Technologie, Prototyping und Umsetzungsrealität. Also aus der Frage, wie abstrakte Zukunftsfähigkeit praktisch prüfbar und entwickelbar wird.</p><p>Eine rein technologische KI-Beratung erreicht Eigentümerfamilien oft nicht auf der richtigen Ebene. Eine reine Governance-Beratung kann digitale und KI-bezogene Anschlussfähigkeit oft nur begrenzt operativ prüfen. Gemeinsam könnte daraus ein Ansatz entstehen, der die menschliche und technologische Seite der Nachfolge verbindet.</p></div>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Die Stärke der Idee liegt in der Komplementarität: AvS bringt Zugang, Vertrauen und Governance-Kompetenz. active value bringt digitale Diagnosefähigkeit, KI-Verständnis und operative Übersetzung.</p></aside>
     </section>
 
     <section class="section fade-in" id="handlungsrichtungen" aria-labelledby="handlungsrichtungen-title">
       <div class="section-label">09 · Mögliche Handlungsrichtungen</div>
       <h2 class="section-headline" id="handlungsrichtungen-title">Vom Gedanken zur gemeinsamen Agenda.</h2>
-      <div class="pullquote">
-        <p class="pullquote-text">„Der erste Schritt ist kein fertiges Produkt. Der erste Schritt ist eine gemeinsame Sprache für ein neues Thema.“</p>
-      </div>
-      <div class="section-body">
-        <p>Wenn die These trägt, könnte daraus ein gemeinsames Beratungsfeld entstehen. Nicht als Standardprodukt, sondern als entwickelbares Format für unterschiedliche Mandantenkontexte.</p>
-        <p>Mögliche Richtungen:</p>
-      </div>
-
+      <div class="pullquote"><p class="pullquote-text">„Der erste Schritt ist kein fertiges Produkt. Der erste Schritt ist eine gemeinsame Sprache für ein neues Thema.“</p></div>
+      <div class="section-body"><p>Wenn die These trägt, könnte daraus ein gemeinsames Beratungsfeld entstehen. Nicht als Standardprodukt, sondern als entwickelbares Format für unterschiedliche Mandantenkontexte.</p></div>
       <div class="direction-grid" aria-label="Mögliche Handlungsrichtungen">
-        <article class="direction-card">
-          <div class="direction-kicker">01</div>
-          <h3 class="direction-title">Anschlussfähigkeitsgespräch</h3>
-          <p class="direction-text">Ein vertraulicher strategischer Einstieg mit Eigentümern, Next Gen oder Beirat. Ziel: die neue Frage sichtbar machen und ein gemeinsames Verständnis schaffen.</p>
-        </article>
-        <article class="direction-card">
-          <div class="direction-kicker">02</div>
-          <h3 class="direction-title">Digital Succession Anamnese</h3>
-          <p class="direction-text">Ein strukturierter Diagnoseprozess vor oder während der Nachfolge. Fokus: Daten, Wissen, Prozesse, KI-Nutzung, Governance, Kundenschnittstellen und organisatorische Entwicklungsfähigkeit.</p>
-        </article>
-        <article class="direction-card">
-          <div class="direction-kicker">03</div>
-          <h3 class="direction-title">Family Office Portfolio Scan</h3>
-          <p class="direction-text">Ein kompaktes Format für Family Offices und Beteiligungen. Ziel: erkennen, welche operativen Unternehmen technologisch anschlussfähig sind und wo stille Risiken oder Potenziale liegen.</p>
-        </article>
-        <article class="direction-card">
-          <div class="direction-kicker">04</div>
-          <h3 class="direction-title">Next Gen KI-Souveränität</h3>
-          <p class="direction-text">Ein Format für die nächste Unternehmergeneration. Nicht als Tool-Schulung, sondern als Eigentümerperspektive auf KI, Daten, Verantwortung und Wertschöpfung.</p>
-        </article>
-        <article class="direction-card">
-          <div class="direction-kicker">05</div>
-          <h3 class="direction-title">Beiratsbriefing KI und Anschlussfähigkeit</h3>
-          <p class="direction-text">Ein Format für Beiräte und Aufsichtsgremien. Ziel: nicht operative Detailkompetenz, sondern bessere Fragen, klarere Leitplanken und mehr Entscheidungsfähigkeit.</p>
-        </article>
+        <article class="direction-card"><div class="direction-kicker">01</div><h3 class="direction-title">Anschlussfähigkeitsgespräch</h3><p class="direction-text">Ein vertraulicher strategischer Einstieg mit Eigentümern, Next Gen oder Beirat. Ziel: die neue Frage sichtbar machen und ein gemeinsames Verständnis schaffen.</p></article>
+        <article class="direction-card"><div class="direction-kicker">02</div><h3 class="direction-title">Digital Succession Anamnese</h3><p class="direction-text">Ein strukturierter Diagnoseprozess vor oder während der Nachfolge. Fokus: Daten, Wissen, Prozesse, KI-Nutzung, Governance, Kundenschnittstellen und organisatorische Entwicklungsfähigkeit.</p></article>
+        <article class="direction-card"><div class="direction-kicker">03</div><h3 class="direction-title">Family Office Portfolio Scan</h3><p class="direction-text">Ein kompaktes Format für Family Offices und Beteiligungen. Ziel: erkennen, welche operativen Unternehmen technologisch anschlussfähig sind und wo stille Risiken oder Potenziale liegen.</p></article>
+        <article class="direction-card"><div class="direction-kicker">04</div><h3 class="direction-title">Next Gen KI-Souveränität</h3><p class="direction-text">Ein Format für die nächste Unternehmergeneration. Nicht als Tool-Schulung, sondern als Eigentümerperspektive auf KI, Daten, Verantwortung und Wertschöpfung.</p></article>
+        <article class="direction-card"><div class="direction-kicker">05</div><h3 class="direction-title">Beiratsbriefing KI und Anschlussfähigkeit</h3><p class="direction-text">Ein Format für Beiräte und Aufsichtsgremien. Ziel: bessere Fragen, klarere Leitplanken und mehr Entscheidungsfähigkeit.</p></article>
       </div>
-
-      <aside class="kernbefund">
-        <div class="kernbefund-label">Kernbefund</div>
-        <p class="kernbefund-text">Das Thema eignet sich nicht für einen schnellen Produktverkauf. Es eignet sich für eine gemeinsame Agenda, aus der konkrete Angebote für Unternehmerfamilien, Family Offices und Beiräte entstehen können.</p>
-      </aside>
+      <aside class="kernbefund"><div class="kernbefund-label">Kernbefund</div><p class="kernbefund-text">Das Thema eignet sich nicht für einen schnellen Produktverkauf. Es eignet sich für eine gemeinsame Agenda, aus der konkrete Angebote für Unternehmerfamilien, Family Offices und Beiräte entstehen können.</p></aside>
     </section>
 
-    <section class="section closing fade-in" id="schluss" aria-labelledby="schluss-title">
-      <div class="section-label">Schluss</div>
-      <h2 class="section-headline" id="schluss-title">Die Übergabe der Zukunftsfähigkeit</h2>
-      <div class="section-body">
-        <p>Nachfolge im KI-Zeitalter bedeutet nicht, alle Antworten zu kennen. Niemand kann seriös vorhersagen, wie tief KI einzelne Geschäftsmodelle, Branchen und Wertschöpfungsketten verändern wird.</p>
-        <p>Aber genau deshalb braucht es einen neuen Prüfpunkt.</p>
-        <p>Ein Unternehmen anschlussfähig zu übergeben heißt nicht, es fertig für die Zukunft zu machen. Es heißt, der nächsten Generation ein System zu übergeben, das weiter lernen kann.</p>
-        <p>Das ist die zweite Dimension der Nachfolgefähigkeit.</p>
-      </div>
+    <section class="section fade-in" id="schluss" aria-labelledby="schluss-title">
+      <div class="section-label">Schluss</div><h2 class="section-headline" id="schluss-title">Die Übergabe der Zukunftsfähigkeit</h2>
+      <div class="section-body"><p>Nachfolge im KI-Zeitalter bedeutet nicht, alle Antworten zu kennen. Niemand kann seriös vorhersagen, wie tief KI einzelne Geschäftsmodelle, Branchen und Wertschöpfungsketten verändern wird.</p><p>Aber genau deshalb braucht es einen neuen Prüfpunkt.</p><p>Ein Unternehmen anschlussfähig zu übergeben heißt nicht, es fertig für die Zukunft zu machen. Es heißt, der nächsten Generation ein System zu übergeben, das weiter lernen kann.</p><p>Das ist die zweite Dimension der Nachfolgefähigkeit.</p></div>
     </section>
 
-    <footer class="footer">
-      <div>
-        <div class="footer-brand">active value GmbH · Düsseldorf</div>
-        <div class="footer-note">in strategischer Annäherung an AvS Advisors</div>
-      </div>
-      <address class="footer-contact">
-        Oliver Bargfeld<br>
-        <a href="mailto:oliver.bargfeld@active-value.de">oliver.bargfeld@active-value.de</a>
-      </address>
-    </footer>
+    <footer class="footer"><div><div class="footer-brand">active value GmbH · Düsseldorf</div><div class="footer-note">in strategischer Annäherung an AvS Advisors</div></div><address class="footer-contact">Oliver Bargfeld<br><a href="mailto:oliver.bargfeld@active-value.de">oliver.bargfeld@active-value.de</a></address></footer>
   </main>
-
   <script>
     const progressBar = document.getElementById("progressBar");
-
-    function updateProgress() {
-      const root = document.documentElement;
-      const maxScroll = root.scrollHeight - root.clientHeight;
-      const progress = maxScroll > 0 ? (root.scrollTop / maxScroll) * 100 : 0;
-      progressBar.style.width = `${progress}%`;
-    }
-
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-    updateProgress();
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-
-    document.querySelectorAll(".fade-in").forEach((element) => observer.observe(element));
-
-    document.querySelectorAll(".brand-lockup img").forEach((logo) => {
-      const parent = logo.parentElement;
-
-      const markLoaded = () => {
-        if (logo.naturalWidth > 0) {
-          parent.classList.add("logo-loaded");
-        } else {
-          parent.classList.add("logo-missing");
-        }
-      };
-
-      logo.addEventListener("load", markLoaded);
-      logo.addEventListener("error", () => {
-        parent.classList.add("logo-missing");
-        logo.remove();
-      });
-
-      if (logo.complete) {
-        markLoaded();
-      }
+    function updateProgress(){ const root=document.documentElement; const max=root.scrollHeight-root.clientHeight; progressBar.style.width=(max>0?root.scrollTop/max*100:0)+"%"; }
+    window.addEventListener("scroll", updateProgress, { passive: true }); window.addEventListener("resize", updateProgress); updateProgress();
+    const observer = new IntersectionObserver((entries)=>{ entries.forEach((entry)=>{ if(entry.isIntersecting){ entry.target.classList.add("visible"); observer.unobserve(entry.target); } }); }, { threshold: .08 });
+    document.querySelectorAll(".fade-in").forEach((element)=>observer.observe(element));
+    document.querySelectorAll(".brand-lockup img").forEach((logo)=>{
+      const parent=logo.parentElement; const showFallback=()=>{ parent.classList.add("logo-missing"); logo.remove(); };
+      const markLoaded=()=>{ logo.naturalWidth>0 ? parent.classList.add("logo-loaded") : showFallback(); };
+      logo.addEventListener("load", markLoaded); logo.addEventListener("error", showFallback);
+      const logoBase64Path=logo.dataset.logoBase64;
+      if(logoBase64Path){ fetch(logoBase64Path).then((response)=>{ if(!response.ok){ throw new Error("Logo konnte nicht geladen werden"); } return response.text(); }).then((logoBase64)=>{ logo.src=`data:image/png;base64,${logoBase64.trim()}`; }).catch(showFallback); return; }
+      if(logo.complete){ markLoaded(); }
     });
   </script>
 </body>
